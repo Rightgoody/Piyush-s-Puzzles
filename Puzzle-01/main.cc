@@ -5,9 +5,10 @@
 
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 int main() {
-    unsigned long long int user_input{0}; // user input
+    long long int user_input{0}; // user input
 
     std::cout << "Enter the number: ";
     std::cin >> user_input;
@@ -16,27 +17,35 @@ int main() {
         std::cout << "Only positive numbers allowed.\n";
         return 0;
     }
-    std::vector <int> factor_list{}; // vector to store the factors
 
-    for(int i=1; i < user_input; i++) {
+    std::vector <int> first_half_factor_list{}; // vector to store the first half of factors
+    std::vector <int> second_half_factor_list{}; // vector to store the second half of factors
+    double squared_user_input = sqrt(user_input); // stores the value of user square root number to use in for loop
+
+    for(long long int i=1; i <= squared_user_input; i++) {
         if(user_input % i == 0 ) {
-            factor_list.push_back(i);
+            first_half_factor_list.push_back(i);
+
+            if (i != user_input / i) {
+            second_half_factor_list.insert(second_half_factor_list.begin(), user_input / i);
+            }
         }
     }
 
     std::cout << "Factors of " << user_input
               << ": ";
 
-    long int n = factor_list.size();
+    long int n1 = first_half_factor_list.size();
+    long int n2 = second_half_factor_list.size();
 
-    for(int i=0; i < n-1; i++) {
-        std::cout << factor_list.at(i) << ", ";
+    for (int i=0; i < n1; i++) {
+        std::cout << first_half_factor_list.at(i) << ", ";
     }
 
-    std::cout << factor_list.at(n-1) << "\n";
-
-    // Optimization could be stopping to search for factors after the size
-    // of the vector is less than the size of its square root.
-    
+    for (int i=0; i < n2 - 1; i++) {
+        std::cout << second_half_factor_list.at(i) << ", ";
+    }
+        std::cout << second_half_factor_list.at((second_half_factor_list.size() - 1)) << std::endl;
+ 
 return 0;
 }
